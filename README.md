@@ -1,5 +1,7 @@
 # Audio Database Manager
 
+This set of scripts (and future all-in-one program) is meant to allow you to manage your audio (probably music) database. It will check the integrity of your files, flag stupidly re-encoded files, as well as allow you quick syncing with a portable storage medium.
+
 ## Audio Database Verifier:
 
 The `check.py` script is meant to verify the integrity of your local audio library. It checks for two main this (possibly more in the future):
