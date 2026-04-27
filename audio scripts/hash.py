@@ -5,7 +5,8 @@ from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
 import argparse
 
-# Input paths as you'd like. The string below means "directory the script is in". It defaults that the script is in the global library directory, and the portable library directory needs to be added.
+# Input paths as you'd like. The string below means "directory the script is in".
+# It defaults that the script is in the global library directory, and the portable library directory needs to be added.
 # Path(__file__).resolve().parent
 
 GLOBAL_LIBRARY_PATH = Path(__file__).resolve().parent
