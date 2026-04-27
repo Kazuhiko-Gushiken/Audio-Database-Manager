@@ -64,6 +64,5 @@ def sync():
 
     save_json(DST_MANIFEST, src)
 
-
 if __name__ == "__main__":
     sync()

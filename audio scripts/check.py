@@ -35,7 +35,6 @@ def run_subprocess(cmd):
         errors="replace"
     )
 
-
 def get_metadata_duration(file_path):
     cmd = [
         "ffprobe",
@@ -55,7 +54,6 @@ def get_metadata_duration(file_path):
         return float(data["format"]["duration"])
     except Exception:
         return None
-
 
 def get_decoded_duration(file_path):
     cmd = [
@@ -97,8 +95,6 @@ def process_file(full_path):
     if file_kbps > 5000 and not is_ignored(norm_path):
         return ("large", full_path, meta_duration, file_size_kb)
 
-    
-
 def scan_folder(folder):
     problem_files = []
     large_files = []
@@ -132,7 +128,6 @@ def scan_folder(folder):
 
     write_report(folder, total_files, problem_files, large_files)
 
-
 def write_report(folder, total_files, problem_files, large_files):
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write(f"# Audio Duration Scan Report\n\n")
@@ -163,7 +158,6 @@ def write_report(folder, total_files, problem_files, large_files):
             f.write("✓ No significant issues found.\n")
 
     print(f"\nReport written to {OUTPUT_FILE}")
-
 
 if __name__ == "__main__":
     scan_folder(os.path.dirname(os.path.abspath(__file__)))

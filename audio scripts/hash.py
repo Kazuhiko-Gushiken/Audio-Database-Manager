@@ -66,7 +66,6 @@ def scan_library(dest):
         USE_PATH = GLOBAL_LIBRARY_PATH
         USE_MANIFEST = GLOBAL_MANIFEST_PATH
 
-
     old_manifest = load_manifest(USE_MANIFEST)
     new_manifest = {"files": {}}
 
@@ -101,9 +100,7 @@ def save_manifest(data, mpath):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--destination", action="store_true")
-
     args = parser.parse_args()
-
     dest = args.destination
 
     manifest = scan_library(dest)
