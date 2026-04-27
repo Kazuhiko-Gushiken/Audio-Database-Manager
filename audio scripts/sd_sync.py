@@ -1,7 +1,6 @@
 import shutil
 import json
 from pathlib import Path
-import os
 
 SOURCE = Path(__file__).resolve().parent
 DEST = Path(r"") # absolute path to destination root

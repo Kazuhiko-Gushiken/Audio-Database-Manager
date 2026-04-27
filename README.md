@@ -30,6 +30,8 @@ The `sd_sync.py` script does what the second bullet point of the block of text a
 
 ## How to use:
 
+First and foremost, you'll need python and ffmpeg. Python must be at least version 3.5 as it supports `concurrent.futures` and `pathlib`.
+
 ### Audio Database Verifier:
 
 Place the `check.py` file into two locations:
