@@ -3,10 +3,10 @@ import json
 from pathlib import Path
 import os
 
-SOURCE = os.path.dirname(os.path.abspath(__file__))
+SOURCE = Path(__file__).resolve().parent
 DEST = Path(r"") # absolute path to destination root
 
-SRC_MANIFEST = os.path.join(SOURCE, "library_manifest.json")
+SRC_MANIFEST = SOURCE / "library_manifest.json"
 DST_MANIFEST = Path(r"") # absolute path to destination manifest "sd_manifest.json"
 
 IGNORE_FILES = {
@@ -15,10 +15,9 @@ IGNORE_FILES = {
     "hash_source.py",
     "hash_dest.py",
     "sd_sync.py",
-    "check.py"
+    "check.py",
     "scan_report.md"
 }
-
 
 def load_json(path):
     if not path.exists():

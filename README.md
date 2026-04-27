@@ -18,7 +18,7 @@ All flags will be output into a `scan_report.md` file, stating important informa
 
 ## Library Hasher:
 
-The `hash_source.py` and `hash_dest.py` are both meant to hash your library in both the source directory and destination directory. Only one is setup for multi-threaded processing. They are essentially the same file, but with different manifest paths. In the future, the script will implement arguments to choose source or destination to compact it into a single script.
+The `hash.py` script is meant to hash your library in both the source directory and destination directory. Using the argument `-d` or `--destination` will have it hash the destination directory instead.
 
 It produces a manifest that logs the file name, size, modified time, and a `sha256` hash. The manifest helps with two things:
 - It is a single file that catalogues your entire library and their "fingerprints." The hash script will use the manifest to skip already hashed files (comparing the manifest to the file's size and modification time) to save time.
@@ -40,9 +40,7 @@ Run the check script for your global library once. Use the check script in your 
 
 ### Library Hasher:
 
-Place the `hash_source.py` file into the Global Library Directory Path and run it. It will hash your entire library. This is fine to run again when you add new files, as it will only re-hash new/changed files.
-
-Place the `hash_dest.py` file into the Portable Library Directory Path (e.g. `G:/Music/Portable`) and run it *once*. Each time you use the sync script, it will update the destination's manifest accordingly.
+Place the `hash.py` file into the Global Library Directory Path. Then, open the file and fill in the empty path for the Portable Library Directory. Then, save and run it with no arguments. It will hash your entire library. This is fine to run again when you add new files, as it will only re-hash new/changed files. To hash your Portable Library Directory, add the `-d` or `--destination` argument. This only needs to be done once.
 
 ### Library Sync:
 
@@ -50,7 +48,7 @@ Place the `sd_sync.py` file into the Global Library Directory Path. Open the scr
 
 ## TODO:
 
-- [ ] Combine hash scripts into one.
-- [ ] Make default action of combined hash script be hashing the destination, with an optional argument `-d` to hash the destination.
+- [x] Combine hash scripts into one.
+- [x] Make default action of combined hash script be hashing the destination, with an optional argument `-d` to hash the destination.
 - [ ] Improve the reliability of the `check.py` script. Some audio files spit out false negatives in terms of decoded durations, despite audio players such as Windows Media Player and VLC properly playings the audio.
 - [ ] Implement all scripts into an optional UI for easier use by the non-technologically inclined.

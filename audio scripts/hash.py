@@ -3,9 +3,15 @@ import json
 import hashlib
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
+import argparse
 
-LIBRARY_PATH = os.path.dirname(os.path.abspath(__file__))
-MANIFEST_PATH = os.path.join(LIBRARY_PATH, "library_manifest.json")
+# Input paths as you'd like. The string below means "directory the script is in". It defaults that the script is in the global library directory, and the portable library directory needs to be added.
+# Path(__file__).resolve().parent
+
+GLOBAL_LIBRARY_PATH = Path(__file__).resolve().parent
+GLOBAL_MANIFEST_PATH = GLOBAL_LIBRARY_PATH / "library_manifest.json"
+PORTABLE_LIBRARY_PATH = Path(r"") # Needs Path!!
+PORTABLE_MANIFEST_PATH = PORTABLE_LIBRARY_PATH / "sd_manifest.json"
 
 IGNORE_FILES = {
     "library_manifest.json",
@@ -13,13 +19,13 @@ IGNORE_FILES = {
     "hash_source.py",
     "hash_dest.py",
     "sd_sync.py",
-    "check.py"
+    "check.py",
     "scan_report.md"
 }
 
-def load_manifest():
-    if MANIFEST_PATH.exists():
-        with open(MANIFEST_PATH, "r") as f:
+def load_manifest(mpath):
+    if mpath.exists():
+        with open(mpath, "r") as f:
             return json.load(f)
     return {"files": {}}
 
@@ -31,8 +37,8 @@ def hash_file(path):
     return hasher.hexdigest()
 
 # worker function
-def process_file(full_path, old_manifest):
-    rel_path = full_path.relative_to(LIBRARY_PATH).as_posix()
+def process_file(full_path, old_manifest, dpath):
+    rel_path = full_path.relative_to(dpath).as_posix()
     stat = full_path.stat()
 
     size = stat.st_size
@@ -51,13 +57,21 @@ def process_file(full_path, old_manifest):
         "hash": file_hash,
     }, "hashed"
 
-def scan_library():
-    old_manifest = load_manifest()
+def scan_library(dest):
+    if dest:
+        USE_PATH = PORTABLE_LIBRARY_PATH
+        USE_MANIFEST = PORTABLE_MANIFEST_PATH
+    else:
+        USE_PATH = GLOBAL_LIBRARY_PATH
+        USE_MANIFEST = GLOBAL_MANIFEST_PATH
+
+
+    old_manifest = load_manifest(USE_MANIFEST)
     new_manifest = {"files": {}}
 
     file_list = []
 
-    for root, _, files in os.walk(LIBRARY_PATH):
+    for root, _, files in os.walk(USE_PATH):
         for file in files:
             full_path = Path(root) / file
 
@@ -67,7 +81,7 @@ def scan_library():
             file_list.append(full_path)
 
     with ThreadPoolExecutor(max_workers=4) as executor:
-        results = executor.map(lambda p: process_file(p, old_manifest), file_list)
+        results = executor.map(lambda p: process_file(p, old_manifest, USE_PATH), file_list)
 
         for rel_path, data, status in results:
             new_manifest["files"][rel_path] = data
@@ -76,14 +90,27 @@ def scan_library():
             else:
                 print(f"Hashed: {rel_path}")
 
-    return new_manifest\
+    return new_manifest
 
-def save_manifest(data):
-    with open(MANIFEST_PATH, "w") as f:
+def save_manifest(data, mpath):
+    with open(mpath, "w") as f:
         json.dump(data, f, indent=2)
 
 
 if __name__ == "__main__":
-    manifest = scan_library()
-    save_manifest(manifest)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--destination", action="store_true")
+
+    args = parser.parse_args()
+
+    dest = args.destination
+
+    manifest = scan_library(dest)
+
+    if dest:
+        mpath = PORTABLE_MANIFEST_PATH
+    else:
+        mpath = GLOBAL_MANIFEST_PATH
+
+    save_manifest(manifest, mpath)
     print("Done.")
