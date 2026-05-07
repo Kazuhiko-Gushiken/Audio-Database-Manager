@@ -52,6 +52,7 @@ Place the `sd_sync.py` file into the Global Library Directory Path. Open the scr
 
 - [x] Combine hash scripts into one.
 - [x] Make default action of combined hash script be hashing the destination, with an optional argument `-d` to hash the destination.
+- [ ] Have the `check.py` script also hash files and log them. This will prevent having to re-check unchanged files, as a database can take an increasingly long time to scan due to the requirement of decoding every file.
 - [ ] Add an independent configuration file for the `check.py` script for path ignores. Probably a simple `.config` and each new line is a new path.
 - [ ] Improve the reliability of the `check.py` script. Some audio files spit out false negatives in terms of decoded durations, despite audio players such as Windows Media Player and VLC properly playings the audio.
 - [ ] Implement all scripts into an optional UI for easier use by the non-technologically inclined.
