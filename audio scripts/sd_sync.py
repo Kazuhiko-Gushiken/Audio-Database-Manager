@@ -15,7 +15,8 @@ IGNORE_FILES = {
     "hash_dest.py",
     "sd_sync.py",
     "check.py",
-    "scan_report.md"
+    "scan_report.md",
+    ".nomedia"
 }
 
 def load_json(path):

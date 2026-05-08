@@ -21,8 +21,11 @@ IGNORE_FILES = {
     "hash_dest.py",
     "sd_sync.py",
     "check.py",
-    "scan_report.md"
+    "scan_report.md",
+    ".nomedia"
 }
+
+MTIME_TOLERANCE = 60
 
 def load_manifest(mpath):
     if mpath.exists():
@@ -47,7 +50,7 @@ def process_file(full_path, old_manifest, dpath):
 
     old_entry = old_manifest["files"].get(rel_path)
 
-    if old_entry and old_entry["size"] == size and old_entry["mtime"] == mtime:
+    if old_entry and old_entry["size"] == size and abs(old_entry["mtime"] - mtime) <= MTIME_TOLERANCE:
         return rel_path, old_entry, "skipped"
     
     file_hash = hash_file(full_path)
