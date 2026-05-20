@@ -4,9 +4,10 @@ This set of scripts (and future all-in-one program) is meant to allow you to man
 
 ## Audio Database Verifier:
 
-The `check.py` script is meant to verify the integrity of your local audio library. It checks for two main this (possibly more in the future):
+The `check.py` script is meant to verify the integrity of your local audio library. It checks for two main things (possibly more in the future):
 - It compares the metadata's duration statistic with the actual decoded duration using FFMPEG. If the decoded duration is beyond `0.5s` of the metadata's duration (which the metadata's should be the actual duration of the audio), then it will flag it. Sometimes an audio file can be corrupted and the decoded duration is far smaller than the metadata. During playback, the audio will stop prematurely, mid-song.
 - It compares the total bitrate of the audio file to a strict maximum of `5000 Kbps`. If the bitrate is beyond this, it will be flagged. Sometimes people like to re-encode an audio file at a way higher bit-depth and/or sample rate than the original was, causing unnecessarily large file sizes. By flagging them, you can search for and replace with properly encoded audio files. Now, some audio files may be actually a high bit-rate and/or sample rate, thus, you can add to the list of ignored file paths in the script (on line 17) so the script will pass by them and not flag the album/file.
+- It logs the hash of verified files as to speed up global library re-verification in the future.
 
 All flags will be output into a `scan_report.md` file, stating important information such as:
 - File Name
@@ -15,6 +16,8 @@ All flags will be output into a `scan_report.md` file, stating important informa
 - Decoded Duration
 - Difference
 - File Size
+
+`sub_check.py` is the same as above, but without the hash. I use this to check smaller groups of files after downloading, but before moving into the global library.
 
 ## Library Hasher:
 
