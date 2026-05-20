@@ -86,12 +86,12 @@ def scan_library(dest):
     with ThreadPoolExecutor(max_workers=4) as executor:
         results = executor.map(lambda p: process_file(p, old_manifest, USE_PATH), file_list)
 
-        for rel_path, data, status in results:
+        for i, (rel_path, data, status) in enumerate(results, start=1):
             new_manifest["files"][rel_path] = data
             if status == "skipped":
-                print(f"Skipped (unchanged): {rel_path}")
+                print(f"[{i}/{len(file_list)}] Skipped (unchanged): {rel_path}")
             else:
-                print(f"Hashed: {rel_path}")
+                print(f"[{i}/{len(file_list)}] Hashed: {rel_path}")
 
     return new_manifest
 
