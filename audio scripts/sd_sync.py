@@ -13,10 +13,18 @@ IGNORE_FILES = {
     "sd_manifest.json",
     "hash_source.py",
     "hash_dest.py",
+    "hash.py",
     "sd_sync.py",
     "check.py",
     "scan_report.md",
+    "check_log.json",
     ".nomedia"
+}
+
+IGNORE_EXTENSIONS = {
+    ".mp4",
+    ".description",
+    ".vtt",
 }
 
 def load_json(path):
@@ -39,7 +47,9 @@ def sync():
     dst_files = dst["files"]
 
     for rel_path, info in src_files.items():
-        if Path(rel_path).name in IGNORE_FILES:
+        path = Path(rel_path)
+
+        if path.name in IGNORE_FILES or path.suffix in IGNORE_EXTENSIONS or path.name.endswith(".metadata.json"):
             continue
 
         src_file = SOURCE / rel_path
@@ -55,7 +65,9 @@ def sync():
             shutil.copy2(src_file, dst_file)
 
     for rel_path in dst_files:
-        if Path(rel_path).name in IGNORE_FILES:
+        path = Path(rel_path)
+
+        if path.name in IGNORE_FILES or path.suffix in IGNORE_EXTENSIONS or path.name.endswith(".metadata.json"):
             continue
 
         if rel_path not in src_files:

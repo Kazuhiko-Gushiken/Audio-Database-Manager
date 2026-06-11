@@ -19,8 +19,10 @@ IGNORE_FILES = {
     "sd_manifest.json",
     "hash_source.py",
     "hash_dest.py",
+    "hash.py",
     "sd_sync.py",
     "check.py",
+    "check_log.json",
     "scan_report.md",
     ".nomedia"
 }

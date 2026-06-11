@@ -27,6 +27,12 @@ IGNORE_SIZE_PATHS = set(normalize(p) for p in IGNORE_SIZE_PATHS)
 
 MTIME_TOLERANCE = 60
 
+def is_ignored(path):
+    for ignore in IGNORE_SIZE_PATHS:
+        if path == ignore or path.startswith(ignore + os.sep):
+            return True
+    return False
+
 def load_log(mpath):
     if mpath.exists():
         with open(mpath, "r") as f:
@@ -56,12 +62,6 @@ def process_hash(full_path, old_manifest):
         "size": size,
         "mtime": mtime,
     }, "changed"
-
-def is_ignored(path):
-    for ignore in IGNORE_SIZE_PATHS:
-        if path.startswith(ignore):
-            return True
-    return False
 
 def run_subprocess(cmd):
     return subprocess.run(
@@ -117,9 +117,11 @@ def process_file(full_path, verified_log):
         full_path,
         verified_log
     )
-
+    norm_path = normalize(full_path)
+    
     if hash_status == "skipped":
         return ("verified_skip", rel_path, hash_entry)
+
 
     time.sleep(0.01)
     meta_duration = get_metadata_duration(full_path)
@@ -134,8 +136,6 @@ def process_file(full_path, verified_log):
         return ("problem", full_path, meta_duration, decoded_duration, diff)
     
     file_hash = hash_file(full_path)
-
-    norm_path = normalize(full_path)
 
     file_size_kb = (os.path.getsize(full_path))/1024
     file_kbps = (file_size_kb * 8)/meta_duration
