@@ -51,6 +51,15 @@ Place the `hash.py` file into the Global Library Directory Path. Then, open the 
 
 Place the `sd_sync.py` file into the Global Library Directory Path. Open the script and on line `7` and line `10`, enter the absolute path for the Portable Library Directory and the Portable Library Manifest respectively. You can run this whenever you want to sync any new or changed files (metadata) to your portable storage medium.
 
+### Useful tools:
+
+Managing a database is one thing, but ensuring your audio is carefully and accurately tagged, as well as truthful in it's marked bit depth and sample rate, is another entire beast. To help, here are a few tips: 
+- It's never guaranteed that the metadata of the audio file is truthful, as some people like to upsample and re-encode lower "quality" and MP3s into FLACs with a much higher bit depth and sample rate. For this, one simple tool for manually checking is: [Spec](https://www.spek.cc/). It's super simple, free, and open source. Drag an audio file into the window, and it'll show you the spectrogram. This displays sample rate mainly. If the sample rate says it's 44.1kHz, ensure the "energy" shows up to half of the sample rate (~22kHz). Even if the energy doesn't reach the value you're looking for, so long as the "cut off" seems fuzzy, it may still be a valid file. Hard, flat, wall cutoffs may indicate upsampling.
+- To help tag your audio with proper authors, dates, albums, etc. I enjoy using [Mp3Tag](https://www.mp3tag.de/en/). It has a free and easy to use tool to edit the metadata of audio files, including batch editing to take care of an entire album all at once.
+- To help view *all* information about an audio file, I find [MediaInfo](https://mediaarea.net/en/MediaInfo) very... informative! It handles just about everything, even many video formats, containers, subtitles, etc.
+- For lyrics, there are plenty of programs out there. I personally use [lrcget](https://github.com/tranxuanthang/lrcget). It's open source, and works pretty simply. It can even automatically pull lyrics for an entire album, but I like to manually sift through community lyrics to ensure its accuracy. It's gets both synchronized and plain text song lyrics from LRBLIB, which is a free, open-source, community driven service.
+
+
 ## TODO:
 
 - [x] Combine hash scripts into one.
